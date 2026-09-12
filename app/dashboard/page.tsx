@@ -6,37 +6,46 @@ import { useCalendarStore } from '@/store/useCalendarStore';
 import { Command } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { setEvents } = useCalendarStore();
+  const { setCalendars, setEvents } = useCalendarStore();
 
-  // Inisialisasi dummy event untuk pengetesan grid & drag-and-drop
   useEffect(() => {
-    const today = new Date();
-    
-    const start1 = new Date(today.setHours(9, 0, 0, 0)).toISOString();
-    const end1 = new Date(today.setHours(11, 0, 0, 0)).toISOString();
+    let cancelled = false;
 
-    const start2 = new Date(today.setHours(13, 0, 0, 0)).toISOString();
-    const end2 = new Date(today.setHours(14, 0, 0, 0)).toISOString();
+    const loadEvents = async () => {
+      const response = await fetch('/api/events');
+      if (!response.ok) throw new Error('Gagal memuat event');
 
-    setEvents([
-      {
-        id: 'evt-1',
-        calendarId: '1',
-        title: 'Time-Block: Riset Komponen React & DnD Kit',
-        startTime: start1,
-        endTime: end1,
-        isAllDay: false,
-      },
-      {
-        id: 'evt-2',
-        calendarId: '2',
-        title: 'Sync Meeting Tim Engineering',
-        startTime: start2,
-        endTime: end2,
-        isAllDay: false,
-      },
-    ]);
-  }, [setEvents]);
+      const data = await response.json();
+      if (cancelled) return;
+
+      setCalendars(
+        data.calendars.map((calendar: {
+          id: string;
+          name: string;
+          colorHex: string;
+          provider: 'PRIMARY' | 'GOOGLE' | 'OUTLOOK' | 'ICLOUD';
+          isVisible: boolean;
+          isOverlay: boolean;
+        }) => ({
+          id: calendar.id,
+          name: calendar.name,
+          colorHex: calendar.colorHex,
+          provider: calendar.provider,
+          isVisible: calendar.isVisible,
+          isOverlay: calendar.isOverlay,
+        }))
+      );
+      setEvents(data.events);
+    };
+
+    void loadEvents().catch((error) => {
+      console.error('Gagal memuat event kalender:', error);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [setCalendars, setEvents]);
 
   return (
     <>

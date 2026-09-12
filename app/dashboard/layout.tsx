@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import Sidebar from '@/components/layout/Sidebar';
 import TaskBacklog from '@/components/layout/TaskBacklog';
@@ -14,14 +14,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { setCalendars, moveEventOptimistic, addEventFromTaskOptimistic } = useCalendarStore();
-
-  useEffect(() => {
-    setCalendars([
-      { id: '1', name: 'Kalender Utama', colorHex: '#3B82F6', provider: 'PRIMARY', isVisible: true, isOverlay: false },
-      { id: '2', name: 'Google Pekerjaan', colorHex: '#10B981', provider: 'GOOGLE', isVisible: true, isOverlay: true },
-    ]);
-  }, [setCalendars]);
+  const { moveEventAsync, addEventFromTaskOptimistic } = useCalendarStore();
 
   // Unified Drag End Handler
   const handleDragEnd = (event: DragEndEvent) => {
@@ -46,7 +39,7 @@ export default function DashboardLayout({
       newStart.setHours(targetHour, 0, 0, 0);
       const newEnd = new Date(newStart.getTime() + durationMs);
 
-      moveEventOptimistic(eventData.id, newStart, newEnd);
+      void moveEventAsync(eventData.id, newStart, newEnd);
     }
 
     // SKENARIO 2: Menarik Task Baru dari Backlog ke Kisi-Kisi Jam

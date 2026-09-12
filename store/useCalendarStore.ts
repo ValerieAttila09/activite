@@ -44,6 +44,7 @@ interface CalendarState {
   
   // Drag & Drop Optimistic Update
   moveEventOptimistic: (eventId: string, newStart: Date, newEnd: Date) => void;
+  moveEventAsync: (eventId: string, newStart: Date, newEnd: Date) => Promise<void>;
   addEventFromTaskOptimistic: (newEvent: CalendarEvent) => void;
   rollbackEvents: () => void;
 }
@@ -112,6 +113,28 @@ export const useCalendarStore = create<CalendarState>()(
       });
     },
 
+    moveEventAsync: async (eventId: string, newStart: Date, newEnd: Date) => {
+      // 1. Optimistic Update lokal
+      get().moveEventOptimistic(eventId, newStart, newEnd);
+
+      // 2. Kirim request ke backend
+      try {
+        const res = await fetch(`/api/events/${eventId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            startTime: newStart.toISOString(),
+            endTime: newEnd.toISOString(),
+          }),
+        });
+
+        if (!res.ok) throw new Error('Update gagal');
+      } catch (error) {
+        console.error('Gagal update ke server, memulihkan data...', error);
+        get().rollbackEvents();
+      }
+    },
+
     // Optimistic Update: Menarik Task dari Backlog ke Grid
     addEventFromTaskOptimistic: (newEvent) => {
       const currentEvents = get().events;
@@ -167,6 +190,26 @@ export const useCalendarStore = create<CalendarState>()(
         },
       };
     }),
+    fetchInitialData: async () => {
+      try {
+        set({ isLoading: true });
+        
+        const [eventsRes, tasksRes] = await Promise.all([
+          fetch('/api/events'),
+          fetch('/api/tasks'),
+        ]);
+
+        if (eventsRes.ok && tasksRes.ok) {
+          const { calendars, events } = await eventsRes.json();
+          const tasks = await tasksRes.json();
+
+          set({ calendars, events, isLoading: false });
+        }
+      } catch (error) {
+        console.error('Gagal sync awal:', error);
+        set({ isLoading: false });
+      }
+    },
   })),
 );
 
