@@ -1,0 +1,295 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum CalendarProvider {
+  PRIMARY
+  GOOGLE
+  OUTLOOK
+  ICLOUD
+}
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum EventStatus {
+  CONFIRMED
+  TENTATIVE
+  CANCELLED
+}
+
+enum FocusStatus {
+  RUNNING
+  PAUSED
+  COMPLETED
+  ABORTED
+}
+
+enum WorkLocationType {
+  OFFICE
+  REMOTE
+  HYBRID
+  OFF
+}
+
+enum RitualType {
+  MORNING_PLANNING
+  EVENING_SHUTDOWN
+}
+
+enum RitualStatus {
+  PENDING
+  COMPLETED
+  SKIPPED
+}
+
+// ==========================================
+// USER & SETTINGS
+// ==========================================
+
+model User {
+  id                     String   @id @default(uuid())
+  email                  String   @unique
+  name                   String?
+  avatarUrl              String?
+  timezone               String   @default("Asia/Jakarta")
+  
+  // Working Hours & Threshold Settings
+  workStartTime          String   @default("08:00") // Format "HH:mm"
+  workEndTime            String   @default("17:00") // Format "HH:mm"
+  workDays               Int[]    @default([1, 2, 3, 4, 5]) // 1=Mon, 7=Sun
+  dailyThresholdMinutes  Int      @default(480) // 8 Jam
+
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  // Relasi
+  calendars              Calendar[]
+  tasks                  Task[]
+  focusSessions          FocusSession[]
+  dailyRitualLogs        DailyRitualLog[]
+  workLocations          WorkingLocation[]
+  bookingLinks           BookingLink[]
+
+  @@map("users")
+}
+
+model WorkingLocation {
+  id        String           @id @default(uuid())
+  userId    String
+  date      DateTime         @db.Date
+  location  WorkLocationType @default(REMOTE)
+  note      String?
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("working_locations")
+}
+
+// ==========================================
+// CALENDARS & EVENTS (Multi-Calendar & Overlay)
+// ==========================================
+
+model Calendar {
+  id          String           @id @default(uuid())
+  userId      String
+  provider    CalendarProvider @default(PRIMARY)
+  externalId  String?          // ID dari Google/Outlook
+  name        String
+  colorHex    String           @default("#3B82F6")
+  isOverlay   Boolean          @default(false)
+  isVisible   Boolean          @default(true)
+  syncToken   String?          // Token untuk Delta Sync API
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events      Event[]
+
+  @@index([userId])
+  @@map("calendars")
+}
+
+model Event {
+  id          String      @id @default(uuid())
+  calendarId  String
+  taskId      String?     // Terisi jika event hasil Drag & Drop dari Task
+  externalId  String?     // ID event sinkronisasi luar
+  title       String
+  description String?     @db.Text
+  startTime   DateTime
+  endTime     DateTime
+  isAllDay    Boolean     @default(false)
+  status      EventStatus @default(CONFIRMED)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  calendar    Calendar    @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+  task        Task?       @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  focusSessions FocusSession[]
+
+  @@index([calendarId])
+  @@index([taskId])
+  @@index([startTime, endTime])
+  @@map("events")
+}
+
+// ==========================================
+// TASKS & BACKLOG (Drag & Drop & Capacity)
+// ==========================================
+
+model Task {
+  id                String       @id @default(uuid())
+  userId            String
+  title             String
+  description       String?      @db.Text
+  estimatedDuration Int          @default(30) // Dalam menit
+  actualDuration    Int          @default(0)  // akumulasi durasi fokus
+  status            TaskStatus   @default(BACKLOG)
+  priority          TaskPriority @default(MEDIUM)
+  dueDate           DateTime?
+  position          Float        @default(0) // Untuk urutan Drag & Drop di Backlog
+
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events            Event[]
+  focusSessions     FocusSession[]
+
+  @@index([userId, status])
+  @@map("tasks")
+}
+
+// ==========================================
+// FOCUS TIMER & REAL-TIME TRACKING
+// ==========================================
+
+model FocusSession {
+  id              String      @id @default(uuid())
+  userId          String
+  taskId          String?
+  eventId         String?
+  startTime       DateTime    @default(now())
+  endTime         DateTime?
+  durationMinutes Int         @default(0)
+  status          FocusStatus @default(RUNNING)
+  notes           String?
+
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task            Task?       @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  event           Event?      @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([taskId])
+  @@map("focus_sessions")
+}
+
+// ==========================================
+// GUIDED DAILY RITUAL
+// ==========================================
+
+model DailyRitualLog {
+  id                  String       @id @default(uuid())
+  userId              String
+  date                DateTime     @db.Date
+  type                RitualType
+  status              RitualStatus @default(PENDING)
+  plannedMinutes      Int          @default(0)
+  completedTasksCount Int          @default(0)
+  reflection          String?      @db.Text
+  completedAt         DateTime?
+
+  user                User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date, type])
+  @@index([userId, date])
+  @@map("daily_ritual_logs")
+}
+
+// ==========================================
+// NATIVE BOOKING LINKS
+// ==========================================
+
+model BookingLink {
+  id                  String                @id @default(uuid())
+  userId              String
+  slug                String                @unique // contoh: "valerie/coaching"
+  title               String
+  description         String?
+  durationMinutes     Int                   @default(30)
+  bufferBeforeMinutes Int                   @default(0)
+  bufferAfterMinutes  Int                   @default(0)
+  isActive            Boolean               @default(true)
+
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+
+  user                User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  availabilities      BookingAvailability[]
+  appointments        BookingAppointment[]
+
+  @@index([userId])
+  @@map("booking_links")
+}
+
+model BookingAvailability {
+  id            String      @id @default(uuid())
+  bookingLinkId String
+  dayOfWeek     Int         // 0=Sun, 1=Mon, ..., 6=Sat
+  startTime     String      // Format "09:00"
+  endTime       String      // Format "17:00"
+
+  bookingLink   BookingLink @relation(fields: [bookingLinkId], references: [id], onDelete: Cascade)
+
+  @@map("booking_availabilities")
+}
+
+model BookingAppointment {
+  id            String      @id @default(uuid())
+  bookingLinkId String
+  guestName     String
+  guestEmail    String
+  guestNotes    String?
+  startTime     DateTime
+  endTime       DateTime
+  status        EventStatus @default(CONFIRMED)
+
+  createdAt     DateTime    @default(now())
+
+  bookingLink   BookingLink @relation(fields: [bookingLinkId], references: [id], onDelete: Cascade)
+
+  @@index([bookingLinkId])
+  @@index([startTime, endTime])
+  @@map("booking_appointments")
+}
