@@ -1,17 +1,21 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
-// GET: Ambil daftar event & kalender milik user
+// Mencegah Next.js meng-cache data event secara statis
+export const dynamic = 'force-dynamic';
+
+// GET: Ambil daftar event & kalender milik user yang sedang login
 export async function GET() {
   try {
-    // Ambil user pertama (atau berdasarkan session auth nantinya)
-    const user = await prisma.user.findFirst();
-    if (!user) {
-      return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Tidak terotentikasi' }, { status: 401 });
     }
 
     const calendars = await prisma.calendar.findMany({
-      where: { userId: user.id },
+      where: { userId: session.user.id },
       include: {
         events: true,
       },
@@ -26,15 +30,34 @@ export async function GET() {
   }
 }
 
-// POST: Buat event baru (misal hasil drag & drop dari task ke calendar)
+// POST: Buat event baru (hasil drag & drop dari task ke calendar)
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Tidak terotentikasi' }, { status: 401 });
+    }
+
     const body = await req.json();
     const { calendarId, taskId, title, startTime, endTime } = body;
 
+    // Jika calendarId tidak dikirim dari UI, otomatis ambil Kalender Utama user
+    let targetCalendarId = calendarId;
+    if (!targetCalendarId) {
+      const primaryCal = await prisma.calendar.findFirst({
+        where: { userId: session.user.id, provider: 'PRIMARY' },
+      });
+      targetCalendarId = primaryCal?.id;
+    }
+
+    if (!targetCalendarId) {
+      return NextResponse.json({ error: 'Kalender tidak ditemukan' }, { status: 400 });
+    }
+
     const newEvent = await prisma.event.create({
       data: {
-        calendarId,
+        calendarId: targetCalendarId,
         taskId: taskId || null,
         title,
         startTime: new Date(startTime),
@@ -46,7 +69,7 @@ export async function POST(req: Request) {
     // Jika event dibuat dari task, perbarui status task menjadi IN_PROGRESS
     if (taskId) {
       await prisma.task.update({
-        where: { id: taskId },
+        where: { id: taskId, userId: session.user.id },
         data: { status: 'IN_PROGRESS' },
       });
     }

@@ -38,9 +38,10 @@ export type UserSumAggregateOutputType = {
 
 export type UserMinAggregateOutputType = {
   id: string | null
-  email: string | null
   name: string | null
-  avatarUrl: string | null
+  email: string | null
+  emailVerified: Date | null
+  image: string | null
   timezone: string | null
   workStartTime: string | null
   workEndTime: string | null
@@ -51,9 +52,10 @@ export type UserMinAggregateOutputType = {
 
 export type UserMaxAggregateOutputType = {
   id: string | null
-  email: string | null
   name: string | null
-  avatarUrl: string | null
+  email: string | null
+  emailVerified: Date | null
+  image: string | null
   timezone: string | null
   workStartTime: string | null
   workEndTime: string | null
@@ -64,9 +66,10 @@ export type UserMaxAggregateOutputType = {
 
 export type UserCountAggregateOutputType = {
   id: number
-  email: number
   name: number
-  avatarUrl: number
+  email: number
+  emailVerified: number
+  image: number
   timezone: number
   workStartTime: number
   workEndTime: number
@@ -90,9 +93,10 @@ export type UserSumAggregateInputType = {
 
 export type UserMinAggregateInputType = {
   id?: true
-  email?: true
   name?: true
-  avatarUrl?: true
+  email?: true
+  emailVerified?: true
+  image?: true
   timezone?: true
   workStartTime?: true
   workEndTime?: true
@@ -103,9 +107,10 @@ export type UserMinAggregateInputType = {
 
 export type UserMaxAggregateInputType = {
   id?: true
-  email?: true
   name?: true
-  avatarUrl?: true
+  email?: true
+  emailVerified?: true
+  image?: true
   timezone?: true
   workStartTime?: true
   workEndTime?: true
@@ -116,9 +121,10 @@ export type UserMaxAggregateInputType = {
 
 export type UserCountAggregateInputType = {
   id?: true
-  email?: true
   name?: true
-  avatarUrl?: true
+  email?: true
+  emailVerified?: true
+  image?: true
   timezone?: true
   workStartTime?: true
   workEndTime?: true
@@ -217,9 +223,10 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type UserGroupByOutputType = {
   id: string
-  email: string
   name: string | null
-  avatarUrl: string | null
+  email: string | null
+  emailVerified: Date | null
+  image: string | null
   timezone: string
   workStartTime: string
   workEndTime: string
@@ -254,9 +261,10 @@ export type UserWhereInput = {
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.StringFilter<"User"> | string
-  email?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  email?: Prisma.StringNullableFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
   timezone?: Prisma.StringFilter<"User"> | string
   workStartTime?: Prisma.StringFilter<"User"> | string
   workEndTime?: Prisma.StringFilter<"User"> | string
@@ -264,6 +272,8 @@ export type UserWhereInput = {
   dailyThresholdMinutes?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  accounts?: Prisma.AccountListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
   calendars?: Prisma.CalendarListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   focusSessions?: Prisma.FocusSessionListRelationFilter
@@ -274,9 +284,10 @@ export type UserWhereInput = {
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   timezone?: Prisma.SortOrder
   workStartTime?: Prisma.SortOrder
   workEndTime?: Prisma.SortOrder
@@ -284,6 +295,8 @@ export type UserOrderByWithRelationInput = {
   dailyThresholdMinutes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  accounts?: Prisma.AccountOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
   calendars?: Prisma.CalendarOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   focusSessions?: Prisma.FocusSessionOrderByRelationAggregateInput
@@ -299,7 +312,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  image?: Prisma.StringNullableFilter<"User"> | string | null
   timezone?: Prisma.StringFilter<"User"> | string
   workStartTime?: Prisma.StringFilter<"User"> | string
   workEndTime?: Prisma.StringFilter<"User"> | string
@@ -307,6 +321,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   dailyThresholdMinutes?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  accounts?: Prisma.AccountListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
   calendars?: Prisma.CalendarListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   focusSessions?: Prisma.FocusSessionListRelationFilter
@@ -317,9 +333,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailVerified?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   timezone?: Prisma.SortOrder
   workStartTime?: Prisma.SortOrder
   workEndTime?: Prisma.SortOrder
@@ -339,9 +356,10 @@ export type UserScalarWhereWithAggregatesInput = {
   OR?: Prisma.UserScalarWhereWithAggregatesInput[]
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
-  email?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
-  avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  email?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  emailVerified?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   timezone?: Prisma.StringWithAggregatesFilter<"User"> | string
   workStartTime?: Prisma.StringWithAggregatesFilter<"User"> | string
   workEndTime?: Prisma.StringWithAggregatesFilter<"User"> | string
@@ -353,9 +371,10 @@ export type UserScalarWhereWithAggregatesInput = {
 
 export type UserCreateInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -363,6 +382,8 @@ export type UserCreateInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
@@ -373,9 +394,10 @@ export type UserCreateInput = {
 
 export type UserUncheckedCreateInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -383,6 +405,8 @@ export type UserUncheckedCreateInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
@@ -393,9 +417,10 @@ export type UserUncheckedCreateInput = {
 
 export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -403,6 +428,8 @@ export type UserUpdateInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
@@ -413,9 +440,10 @@ export type UserUpdateInput = {
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -423,6 +451,8 @@ export type UserUncheckedUpdateInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -433,9 +463,10 @@ export type UserUncheckedUpdateInput = {
 
 export type UserCreateManyInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -447,9 +478,10 @@ export type UserCreateManyInput = {
 
 export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -461,9 +493,10 @@ export type UserUpdateManyMutationInput = {
 
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -483,9 +516,10 @@ export type IntNullableListFilter<$PrismaModel = never> = {
 
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   workStartTime?: Prisma.SortOrder
   workEndTime?: Prisma.SortOrder
@@ -502,9 +536,10 @@ export type UserAvgOrderByAggregateInput = {
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   workStartTime?: Prisma.SortOrder
   workEndTime?: Prisma.SortOrder
@@ -515,9 +550,10 @@ export type UserMaxOrderByAggregateInput = {
 
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  avatarUrl?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   timezone?: Prisma.SortOrder
   workStartTime?: Prisma.SortOrder
   workEndTime?: Prisma.SortOrder
@@ -548,6 +584,10 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type UserUpdateworkDaysInput = {
   set?: number[]
   push?: number | number[]
@@ -563,6 +603,34 @@ export type IntFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutAccountsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAccountsInput
+  upsert?: Prisma.UserUpsertWithoutAccountsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
 }
 
 export type UserCreateNestedOneWithoutWorkLocationsInput = {
@@ -649,11 +717,12 @@ export type UserUpdateOneRequiredWithoutBookingLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBookingLinksInput, Prisma.UserUpdateWithoutBookingLinksInput>, Prisma.UserUncheckedUpdateWithoutBookingLinksInput>
 }
 
-export type UserCreateWithoutWorkLocationsInput = {
+export type UserCreateWithoutAccountsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -661,6 +730,216 @@ export type UserCreateWithoutWorkLocationsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
+  dailyRitualLogs?: Prisma.DailyRitualLogCreateNestedManyWithoutUserInput
+  workLocations?: Prisma.WorkingLocationCreateNestedManyWithoutUserInput
+  bookingLinks?: Prisma.BookingLinkCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAccountsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  timezone?: string
+  workStartTime?: string
+  workEndTime?: string
+  workDays?: Prisma.UserCreateworkDaysInput | number[]
+  dailyThresholdMinutes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUncheckedCreateNestedManyWithoutUserInput
+  workLocations?: Prisma.WorkingLocationUncheckedCreateNestedManyWithoutUserInput
+  bookingLinks?: Prisma.BookingLinkUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAccountsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+}
+
+export type UserUpsertWithoutAccountsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAccountsInput, Prisma.UserUncheckedCreateWithoutAccountsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAccountsInput, Prisma.UserUncheckedUpdateWithoutAccountsInput>
+}
+
+export type UserUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workDays?: Prisma.UserUpdateworkDaysInput | number[]
+  dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUpdateManyWithoutUserNestedInput
+  workLocations?: Prisma.WorkingLocationUpdateManyWithoutUserNestedInput
+  bookingLinks?: Prisma.BookingLinkUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAccountsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workDays?: Prisma.UserUpdateworkDaysInput | number[]
+  dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUncheckedUpdateManyWithoutUserNestedInput
+  workLocations?: Prisma.WorkingLocationUncheckedUpdateManyWithoutUserNestedInput
+  bookingLinks?: Prisma.BookingLinkUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  timezone?: string
+  workStartTime?: string
+  workEndTime?: string
+  workDays?: Prisma.UserCreateworkDaysInput | number[]
+  dailyThresholdMinutes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
+  focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
+  dailyRitualLogs?: Prisma.DailyRitualLogCreateNestedManyWithoutUserInput
+  workLocations?: Prisma.WorkingLocationCreateNestedManyWithoutUserInput
+  bookingLinks?: Prisma.BookingLinkCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  timezone?: string
+  workStartTime?: string
+  workEndTime?: string
+  workDays?: Prisma.UserCreateworkDaysInput | number[]
+  dailyThresholdMinutes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
+  focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUncheckedCreateNestedManyWithoutUserInput
+  workLocations?: Prisma.WorkingLocationUncheckedCreateNestedManyWithoutUserInput
+  bookingLinks?: Prisma.BookingLinkUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workDays?: Prisma.UserUpdateworkDaysInput | number[]
+  dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
+  focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUpdateManyWithoutUserNestedInput
+  workLocations?: Prisma.WorkingLocationUpdateManyWithoutUserNestedInput
+  bookingLinks?: Prisma.BookingLinkUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  timezone?: Prisma.StringFieldUpdateOperationsInput | string
+  workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
+  workDays?: Prisma.UserUpdateworkDaysInput | number[]
+  dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
+  focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
+  dailyRitualLogs?: Prisma.DailyRitualLogUncheckedUpdateManyWithoutUserNestedInput
+  workLocations?: Prisma.WorkingLocationUncheckedUpdateManyWithoutUserNestedInput
+  bookingLinks?: Prisma.BookingLinkUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutWorkLocationsInput = {
+  id?: string
+  name?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
+  timezone?: string
+  workStartTime?: string
+  workEndTime?: string
+  workDays?: Prisma.UserCreateworkDaysInput | number[]
+  dailyThresholdMinutes?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
@@ -670,9 +949,10 @@ export type UserCreateWithoutWorkLocationsInput = {
 
 export type UserUncheckedCreateWithoutWorkLocationsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -680,6 +960,8 @@ export type UserUncheckedCreateWithoutWorkLocationsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
@@ -705,9 +987,10 @@ export type UserUpdateToOneWithWhereWithoutWorkLocationsInput = {
 
 export type UserUpdateWithoutWorkLocationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -715,6 +998,8 @@ export type UserUpdateWithoutWorkLocationsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
@@ -724,9 +1009,10 @@ export type UserUpdateWithoutWorkLocationsInput = {
 
 export type UserUncheckedUpdateWithoutWorkLocationsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -734,6 +1020,8 @@ export type UserUncheckedUpdateWithoutWorkLocationsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -743,9 +1031,10 @@ export type UserUncheckedUpdateWithoutWorkLocationsInput = {
 
 export type UserCreateWithoutCalendarsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -753,6 +1042,8 @@ export type UserCreateWithoutCalendarsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogCreateNestedManyWithoutUserInput
@@ -762,9 +1053,10 @@ export type UserCreateWithoutCalendarsInput = {
 
 export type UserUncheckedCreateWithoutCalendarsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -772,6 +1064,8 @@ export type UserUncheckedCreateWithoutCalendarsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedCreateNestedManyWithoutUserInput
@@ -797,9 +1091,10 @@ export type UserUpdateToOneWithWhereWithoutCalendarsInput = {
 
 export type UserUpdateWithoutCalendarsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -807,6 +1102,8 @@ export type UserUpdateWithoutCalendarsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUpdateManyWithoutUserNestedInput
@@ -816,9 +1113,10 @@ export type UserUpdateWithoutCalendarsInput = {
 
 export type UserUncheckedUpdateWithoutCalendarsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -826,6 +1124,8 @@ export type UserUncheckedUpdateWithoutCalendarsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedUpdateManyWithoutUserNestedInput
@@ -835,9 +1135,10 @@ export type UserUncheckedUpdateWithoutCalendarsInput = {
 
 export type UserCreateWithoutTasksInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -845,6 +1146,8 @@ export type UserCreateWithoutTasksInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogCreateNestedManyWithoutUserInput
@@ -854,9 +1157,10 @@ export type UserCreateWithoutTasksInput = {
 
 export type UserUncheckedCreateWithoutTasksInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -864,6 +1168,8 @@ export type UserUncheckedCreateWithoutTasksInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedCreateNestedManyWithoutUserInput
@@ -889,9 +1195,10 @@ export type UserUpdateToOneWithWhereWithoutTasksInput = {
 
 export type UserUpdateWithoutTasksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -899,6 +1206,8 @@ export type UserUpdateWithoutTasksInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUpdateManyWithoutUserNestedInput
@@ -908,9 +1217,10 @@ export type UserUpdateWithoutTasksInput = {
 
 export type UserUncheckedUpdateWithoutTasksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -918,6 +1228,8 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedUpdateManyWithoutUserNestedInput
@@ -927,9 +1239,10 @@ export type UserUncheckedUpdateWithoutTasksInput = {
 
 export type UserCreateWithoutFocusSessionsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -937,6 +1250,8 @@ export type UserCreateWithoutFocusSessionsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogCreateNestedManyWithoutUserInput
@@ -946,9 +1261,10 @@ export type UserCreateWithoutFocusSessionsInput = {
 
 export type UserUncheckedCreateWithoutFocusSessionsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -956,6 +1272,8 @@ export type UserUncheckedCreateWithoutFocusSessionsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedCreateNestedManyWithoutUserInput
@@ -981,9 +1299,10 @@ export type UserUpdateToOneWithWhereWithoutFocusSessionsInput = {
 
 export type UserUpdateWithoutFocusSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -991,6 +1310,8 @@ export type UserUpdateWithoutFocusSessionsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUpdateManyWithoutUserNestedInput
@@ -1000,9 +1321,10 @@ export type UserUpdateWithoutFocusSessionsInput = {
 
 export type UserUncheckedUpdateWithoutFocusSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1010,6 +1332,8 @@ export type UserUncheckedUpdateWithoutFocusSessionsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   dailyRitualLogs?: Prisma.DailyRitualLogUncheckedUpdateManyWithoutUserNestedInput
@@ -1019,9 +1343,10 @@ export type UserUncheckedUpdateWithoutFocusSessionsInput = {
 
 export type UserCreateWithoutDailyRitualLogsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -1029,6 +1354,8 @@ export type UserCreateWithoutDailyRitualLogsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
@@ -1038,9 +1365,10 @@ export type UserCreateWithoutDailyRitualLogsInput = {
 
 export type UserUncheckedCreateWithoutDailyRitualLogsInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -1048,6 +1376,8 @@ export type UserUncheckedCreateWithoutDailyRitualLogsInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
@@ -1073,9 +1403,10 @@ export type UserUpdateToOneWithWhereWithoutDailyRitualLogsInput = {
 
 export type UserUpdateWithoutDailyRitualLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1083,6 +1414,8 @@ export type UserUpdateWithoutDailyRitualLogsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
@@ -1092,9 +1425,10 @@ export type UserUpdateWithoutDailyRitualLogsInput = {
 
 export type UserUncheckedUpdateWithoutDailyRitualLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1102,6 +1436,8 @@ export type UserUncheckedUpdateWithoutDailyRitualLogsInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1111,9 +1447,10 @@ export type UserUncheckedUpdateWithoutDailyRitualLogsInput = {
 
 export type UserCreateWithoutBookingLinksInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -1121,6 +1458,8 @@ export type UserCreateWithoutBookingLinksInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionCreateNestedManyWithoutUserInput
@@ -1130,9 +1469,10 @@ export type UserCreateWithoutBookingLinksInput = {
 
 export type UserUncheckedCreateWithoutBookingLinksInput = {
   id?: string
-  email: string
   name?: string | null
-  avatarUrl?: string | null
+  email?: string | null
+  emailVerified?: Date | string | null
+  image?: string | null
   timezone?: string
   workStartTime?: string
   workEndTime?: string
@@ -1140,6 +1480,8 @@ export type UserUncheckedCreateWithoutBookingLinksInput = {
   dailyThresholdMinutes?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   calendars?: Prisma.CalendarUncheckedCreateNestedManyWithoutUserInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutUserInput
   focusSessions?: Prisma.FocusSessionUncheckedCreateNestedManyWithoutUserInput
@@ -1165,9 +1507,10 @@ export type UserUpdateToOneWithWhereWithoutBookingLinksInput = {
 
 export type UserUpdateWithoutBookingLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1175,6 +1518,8 @@ export type UserUpdateWithoutBookingLinksInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUpdateManyWithoutUserNestedInput
@@ -1184,9 +1529,10 @@ export type UserUpdateWithoutBookingLinksInput = {
 
 export type UserUncheckedUpdateWithoutBookingLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   timezone?: Prisma.StringFieldUpdateOperationsInput | string
   workStartTime?: Prisma.StringFieldUpdateOperationsInput | string
   workEndTime?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1194,6 +1540,8 @@ export type UserUncheckedUpdateWithoutBookingLinksInput = {
   dailyThresholdMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   calendars?: Prisma.CalendarUncheckedUpdateManyWithoutUserNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutUserNestedInput
   focusSessions?: Prisma.FocusSessionUncheckedUpdateManyWithoutUserNestedInput
@@ -1207,6 +1555,8 @@ export type UserUncheckedUpdateWithoutBookingLinksInput = {
  */
 
 export type UserCountOutputType = {
+  accounts: number
+  sessions: number
   calendars: number
   tasks: number
   focusSessions: number
@@ -1216,6 +1566,8 @@ export type UserCountOutputType = {
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   calendars?: boolean | UserCountOutputTypeCountCalendarsArgs
   tasks?: boolean | UserCountOutputTypeCountTasksArgs
   focusSessions?: boolean | UserCountOutputTypeCountFocusSessionsArgs
@@ -1232,6 +1584,20 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
 }
 
 /**
@@ -1279,9 +1645,10 @@ export type UserCountOutputTypeCountBookingLinksArgs<ExtArgs extends runtime.Typ
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  email?: boolean
   name?: boolean
-  avatarUrl?: boolean
+  email?: boolean
+  emailVerified?: boolean
+  image?: boolean
   timezone?: boolean
   workStartTime?: boolean
   workEndTime?: boolean
@@ -1289,6 +1656,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   dailyThresholdMinutes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   calendars?: boolean | Prisma.User$calendarsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   focusSessions?: boolean | Prisma.User$focusSessionsArgs<ExtArgs>
@@ -1300,9 +1669,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  email?: boolean
   name?: boolean
-  avatarUrl?: boolean
+  email?: boolean
+  emailVerified?: boolean
+  image?: boolean
   timezone?: boolean
   workStartTime?: boolean
   workEndTime?: boolean
@@ -1314,9 +1684,10 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  email?: boolean
   name?: boolean
-  avatarUrl?: boolean
+  email?: boolean
+  emailVerified?: boolean
+  image?: boolean
   timezone?: boolean
   workStartTime?: boolean
   workEndTime?: boolean
@@ -1328,9 +1699,10 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 
 export type UserSelectScalar = {
   id?: boolean
-  email?: boolean
   name?: boolean
-  avatarUrl?: boolean
+  email?: boolean
+  emailVerified?: boolean
+  image?: boolean
   timezone?: boolean
   workStartTime?: boolean
   workEndTime?: boolean
@@ -1340,8 +1712,10 @@ export type UserSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "timezone" | "workStartTime" | "workEndTime" | "workDays" | "dailyThresholdMinutes" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "timezone" | "workStartTime" | "workEndTime" | "workDays" | "dailyThresholdMinutes" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   calendars?: boolean | Prisma.User$calendarsArgs<ExtArgs>
   tasks?: boolean | Prisma.User$tasksArgs<ExtArgs>
   focusSessions?: boolean | Prisma.User$focusSessionsArgs<ExtArgs>
@@ -1356,6 +1730,8 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    accounts: Prisma.$AccountPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
     calendars: Prisma.$CalendarPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     focusSessions: Prisma.$FocusSessionPayload<ExtArgs>[]
@@ -1365,9 +1741,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    email: string
     name: string | null
-    avatarUrl: string | null
+    email: string | null
+    emailVerified: Date | null
+    image: string | null
     timezone: string
     workStartTime: string
     workEndTime: string
@@ -1769,6 +2146,8 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   calendars<T extends Prisma.User$calendarsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$calendarsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalendarPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.User$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   focusSessions<T extends Prisma.User$focusSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$focusSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FocusSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1805,9 +2184,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
  */
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
-  readonly email: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
-  readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
+  readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly emailVerified: Prisma.FieldRef<"User", 'DateTime'>
+  readonly image: Prisma.FieldRef<"User", 'String'>
   readonly timezone: Prisma.FieldRef<"User", 'String'>
   readonly workStartTime: Prisma.FieldRef<"User", 'String'>
   readonly workEndTime: Prisma.FieldRef<"User", 'String'>
@@ -2205,6 +2585,54 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.accounts
+ */
+export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
 }
 
 /**

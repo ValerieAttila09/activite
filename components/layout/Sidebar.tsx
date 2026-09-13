@@ -8,11 +8,15 @@ import {
   Link as LinkIcon, 
   Eye, 
   EyeOff, 
-  Layers 
+  Layers,
+  LogIn,
+  LogOut
 } from 'lucide-react';
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Sidebar() {
   const { calendars, toggleCalendarVisibility, toggleOverlayMode } = useCalendarStore();
+  const { data: session } = useSession();
 
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-950 p-4 flex flex-col justify-between text-slate-200 min-h-screen">
@@ -96,7 +100,37 @@ export default function Sidebar() {
           <LinkIcon className="w-4 h-4 text-blue-400" />
           <span>Salin Booking Link</span>
         </button>
+        <div className="pt-2 space-y-2">
+          {session?.user ? (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <img
+                  src={session.user.image || ''}
+                  alt="Avatar"
+                  className="w-7 h-7 rounded-full border border-slate-700"
+                />
+                <span className="text-xs text-slate-300 truncate font-medium">{session.user.name}</span>
+              </div>
+              <button
+                onClick={() => signOut()}
+                className="p-1.5 hover:bg-slate-900 text-slate-400 hover:text-rose-400 rounded-lg transition-colors"
+                title="Keluar"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => signIn('google')}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white py-2 px-3 rounded-lg text-sm font-medium transition-colors"
+            >
+              <LogIn className="w-4 h-4" />
+              <span>Masuk dengan Google</span>
+            </button>
+          )}
+        </div>
       </div>
+
     </aside>
   );
 }

@@ -612,10 +612,6 @@ export type EnumTaskPriorityFieldUpdateOperationsInput = {
   set?: $Enums.TaskPriority
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number

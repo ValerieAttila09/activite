@@ -74,30 +74,69 @@ enum RitualStatus {
 // ==========================================
 
 model User {
-  id                     String   @id @default(uuid())
-  email                  String   @unique
-  name                   String?
-  avatarUrl              String?
-  timezone               String   @default("Asia/Jakarta")
-  
-  // Working Hours & Threshold Settings
-  workStartTime          String   @default("08:00") // Format "HH:mm"
-  workEndTime            String   @default("17:00") // Format "HH:mm"
-  workDays               Int[]    @default([1, 2, 3, 4, 5]) // 1=Mon, 7=Sun
-  dailyThresholdMinutes  Int      @default(480) // 8 Jam
+  id                    String            @id @default(uuid())
+  name                  String?
+  email                 String?           @unique
+  emailVerified         DateTime?
+  image                 String?
+  timezone              String            @default("Asia/Jakarta")
+  workStartTime         String            @default("08:00")
+  workEndTime           String            @default("17:00")
+  workDays              Int[]             @default([1, 2, 3, 4, 5])
+  dailyThresholdMinutes Int               @default(480)
 
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  accounts              Account[]
+  sessions              Session[]
+  calendars             Calendar[]
+  tasks                 Task[]
+  focusSessions         FocusSession[]
+  dailyRitualLogs       DailyRitualLog[]
+  workLocations         WorkingLocation[]
+  bookingLinks          BookingLink[]
 
-  // Relasi
-  calendars              Calendar[]
-  tasks                  Task[]
-  focusSessions          FocusSession[]
-  dailyRitualLogs        DailyRitualLog[]
-  workLocations          WorkingLocation[]
-  bookingLinks           BookingLink[]
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
 
   @@map("users")
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model WorkingLocation {

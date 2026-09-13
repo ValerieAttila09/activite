@@ -1,17 +1,21 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 
-// GET: Ambil daftar task backlog
+// Mencegah Next.js meng-cache response API GET secara statis
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
-    const user = await prisma.user.findFirst();
-    if (!user) {
-      return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Tidak terotentikasi' }, { status: 401 });
     }
 
     const tasks = await prisma.task.findMany({
-      where: { userId: user.id },
-      orderBy: { position: 'asc' },
+      where: { userId: session.user.id },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(tasks);
@@ -24,15 +28,19 @@ export async function GET() {
 // POST: Tambah task baru ke backlog
 export async function POST(req: Request) {
   try {
-    const user = await prisma.user.findFirst();
-    if (!user) return NextResponse.json({ error: 'User tidak ditemukan' }, { status: 404 });
+    // Ambil session user yang sedang login
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Tidak terotentikasi' }, { status: 401 });
+    }
 
     const body = await req.json();
     const { title, description, estimatedDuration, priority } = body;
 
     const newTask = await prisma.task.create({
       data: {
-        userId: user.id,
+        userId: session.user.id, // Hubungkan ke ID user dari session Google
         title,
         description,
         estimatedDuration: estimatedDuration || 30,

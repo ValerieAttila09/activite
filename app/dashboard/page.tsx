@@ -1,51 +1,58 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import CalendarGrid from '@/components/calendar/CalendarGrid';
 import { useCalendarStore } from '@/store/useCalendarStore';
 import { Command } from 'lucide-react';
 
 export default function DashboardPage() {
+  const { status } = useSession();
   const { setCalendars, setEvents } = useCalendarStore();
 
   useEffect(() => {
+    // Jalankan fetch HANYA jika status autentikasi sudah terkonfirmasi
+    if (status !== 'authenticated') return;
+
     let cancelled = false;
 
     const loadEvents = async () => {
-      const response = await fetch('/api/events');
-      if (!response.ok) throw new Error('Gagal memuat event');
+      try {
+        const response = await fetch('/api/events');
+        if (!response.ok) return;
 
-      const data = await response.json();
-      if (cancelled) return;
+        const data = await response.json();
+        if (cancelled) return;
 
-      setCalendars(
-        data.calendars.map((calendar: {
-          id: string;
-          name: string;
-          colorHex: string;
-          provider: 'PRIMARY' | 'GOOGLE' | 'OUTLOOK' | 'ICLOUD';
-          isVisible: boolean;
-          isOverlay: boolean;
-        }) => ({
-          id: calendar.id,
-          name: calendar.name,
-          colorHex: calendar.colorHex,
-          provider: calendar.provider,
-          isVisible: calendar.isVisible,
-          isOverlay: calendar.isOverlay,
-        }))
-      );
-      setEvents(data.events);
+        setCalendars(
+          data.calendars.map((calendar: {
+            id: string;
+            name: string;
+            colorHex: string;
+            provider: 'PRIMARY' | 'GOOGLE' | 'OUTLOOK' | 'ICLOUD';
+            isVisible: boolean;
+            isOverlay: boolean;
+          }) => ({
+            id: calendar.id,
+            name: calendar.name,
+            colorHex: calendar.colorHex,
+            provider: calendar.provider,
+            isVisible: calendar.isVisible,
+            isOverlay: calendar.isOverlay,
+          }))
+        );
+        setEvents(data.events);
+      } catch (error) {
+        console.error('Gagal memuat event kalender:', error);
+      }
     };
 
-    void loadEvents().catch((error) => {
-      console.error('Gagal memuat event kalender:', error);
-    });
+    void loadEvents();
 
     return () => {
       cancelled = true;
     };
-  }, [setCalendars, setEvents]);
+  }, [status, setCalendars, setEvents]);
 
   return (
     <>
